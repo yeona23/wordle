@@ -1,4 +1,4 @@
-const answer = "PLATE";
+// const answer = "PLATE";
 
 let attempts = 0;
 let index = 0;
@@ -25,13 +25,19 @@ function appStart() {
     clearInterval(timer);
   };
 
-  const handleEnterKey = () => {
+  const handleEnterKey = async() => {
     let rightLetter = 0;
+
+    //서버에서 정답을 받는 코드
+    const response = await fetch('/answer');
+    const answer = await response.json();
+
 
     for (let i = 0; i < 5; i++) {
       const block = document.querySelector(
         `.board-column[data-index='${attempts}${i}']`
       );
+
       const letter = block.innerText;
       const rightAnswer = answer[i];
       if (letter === rightAnswer) {
@@ -73,6 +79,7 @@ function appStart() {
       thisBlock.innerText = key;
       index += 1;
     }
+
     // if (65 <= keyCode && keyCode <= 90) {
     //   thisBlock.innerText = key;
     //   index += 1;
@@ -81,6 +88,31 @@ function appStart() {
     //   // index++;
     // }
   };
+
+  let mouseBoard = document.querySelectorAll(".keyboard-column");
+  mouseBoard.forEach((el) =>
+    el.addEventListener("click", (e) => {
+      const dataKey = e.target.dataset.key;
+      const thisBlock = document.querySelector(
+        `.board-column[data-index='${attempts}${index}']`
+      );
+
+      thisBlock.innerText = dataKey;
+      index += 1;
+
+      //
+    })
+  );
+
+  // const deleteKey = document.querySelector(
+  //   ".keyboard-column[data-key='DELETE']"
+  // );
+  // // console.log(deleteKey);
+  // deleteKey.addEventListener("click", handleBackspace());
+
+  //  enterKey = document.querySelector(".keyboard-column[data-key='ENTER']");
+  // enterKey.addEventListener("click", handleEnterKey());
+  // console.log(enterKey);
 
   const startTimer = () => {
     const startTime = new Date();
