@@ -1,4 +1,4 @@
-// const answer = "PLATE";
+const answer = "PLATE";
 
 let attempts = 0;
 let index = 0;
@@ -25,13 +25,12 @@ function appStart() {
     clearInterval(timer);
   };
 
-  const handleEnterKey = async() => {
+  const handleEnterKey = () => {
     let rightLetter = 0;
 
     //서버에서 정답을 받는 코드
-    const response = await fetch('/answer');
-    const answer = await response.json();
-
+    // const response = await fetch("/answer");
+    // const answer = await response.json();
 
     for (let i = 0; i < 5; i++) {
       const block = document.querySelector(
@@ -53,6 +52,7 @@ function appStart() {
     if (rightLetter === 5) gameover();
     else nextLine();
   };
+
   const handleBackspace = () => {
     if (index > 0) {
       const prevBlock = document.querySelector(
@@ -79,40 +79,81 @@ function appStart() {
       thisBlock.innerText = key;
       index += 1;
     }
-
-    // if (65 <= keyCode && keyCode <= 90) {
-    //   thisBlock.innerText = key;
-    //   index += 1;
-    //   // index += 1;
-    //   // index = index + 1;
-    //   // index++;
-    // }
   };
 
-  let mouseBoard = document.querySelectorAll(".keyboard-column");
-  mouseBoard.forEach((el) =>
-    el.addEventListener("click", (e) => {
-      const dataKey = e.target.dataset.key;
-      const thisBlock = document.querySelector(
-        `.board-column[data-index='${attempts}${index}']`
-      );
+  //-----------------  const handleClick = (event) => {
+  //   const mouseBoard = event.mouseBoard;
+  //   const thisBlock = document.querySelector(
+  //     `.board-column[data-index='${attempts}${index}']`
+  //   );
 
-      thisBlock.innerText = dataKey;
-      index += 1;
+  //   if (event.mouseBoard === "BACKSPACE") handleBackspace();
+  //   else if (index === 5) {
+  //     if (event.mouseBoard === "ENTER") handleEnterKey();
+  //     else return;
+  //   }
+  // };
 
-      //
-    })
-  );
+  // const handleClick = (e) => {
+  //   if (e.target.matches("[data-key]")) {
+  //     function o() {
+  //       const k = e.target.dataset.key;
+  //       return k;
+  //     }
+  //   }
+  //   const thisBlock = document.querySelector(
+  //     `.board-column[data-index='${attempts}${index}']`
+  //   );
+  //   if (o() === "BACK") handleBackspace();
+  //   else if (index === 5) {
+  //     if (o() === "ENTER") handleEnterKey();
+  //     else return;
+  //   } else if (o() !== "ENTER" && o() !== "BACK") {
+  //     thisBlock.innerText = o();
+  //     index += 1;
+  //   }
+  // };
 
-  // const deleteKey = document.querySelector(
-  //   ".keyboard-column[data-key='DELETE']"
+  const handleClick = (event) => {
+    if (event.target.matches("[data-key]")) {
+      function clickKey() {
+        const mouseClick = event.target.dataset.key;
+        return mouseClick;
+      }
+    }
+  };
+
+  // const mouseBoard = document.querySelectorAll(".keyboard-column");
+  // mouseBoard.forEach((el) =>
+  //   el.addEventListener("click", (e) => {
+  //     const dataKey = e.target.dataset.key;
+  //     const thisBlock = document.querySelector(
+  //       `.board-column[data-index='${attempts}${index}']`
+  //     );
+
+  //     thisBlock.innerText = dataKey;
+  //     index += 1;
+
+  //     if (e.key === "DELETE") handleBackspace();
+  //     else if (index === 5) {
+  //       if (e.key === "ENTER") handleEnterKey();
+  //       else return;
+  //     } else if (65 <= keyCode && keyCode <= 90) {
+  //       thisBlock.innerText = key;
+  //       index += 1;
+  //     }
+  //   })
   // );
-  // // console.log(deleteKey);
-  // deleteKey.addEventListener("click", handleBackspace());
 
-  //  enterKey = document.querySelector(".keyboard-column[data-key='ENTER']");
-  // enterKey.addEventListener("click", handleEnterKey());
-  // console.log(enterKey);
+  // const mouseDelete = document.querySelector(".delete");
+  // mouseDelete.addEventListener("click", () => {
+  //   handleBackspace();
+  //   console.log("OK");
+  // });
+  // const mouseEnter = document.querySelector(".enter");
+  // mouseEnter.addEventListener("click", () => {
+  //   handleEnterKey();
+  // });
 
   const startTimer = () => {
     const startTime = new Date();
@@ -132,6 +173,7 @@ function appStart() {
   startTimer();
 
   window.addEventListener("keydown", handleKeydown);
+  window.addEventListener("click", handleClick);
 }
 
 appStart();
